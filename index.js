@@ -1,15 +1,40 @@
 const inquirer = require('inquirer');
+const { Triangle, Square, Circle } = require('./lib/shapes.js');
 const { join } = require('path');
-const { writeFile } = require('fs/promises');
+const { fs } = require('fs/promises');
 const { type } = require('os');
 
-class CLI {
-    constructor() {
-        this.shapes = [];
-    }
+function writeFile(fileName, answers) {
+    let svgString = '';
 
-    run() {
-        return inquirer
+    svgString = 
+    `<?xml version="1.0" encoding="UTF-8"?>
+    <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">`;
+
+    svgString += `<g>`
+    svgString += `<${answers.shape}`;
+
+    let shapeChoice;
+    if (answers.shape === 'circle') {
+        shapeChoice = new Circle();
+        svgString += `cx="50" cy="50" r="50" fill="${answers.color}" />`;
+    } else if (answers.shape === 'triangle') {
+        shapeChoice = new Triangle();
+        svgString += `points="100,10 40,198 190,78" fill="${answers.color}" />`;
+    } else {
+        shapeChoice = new Square();
+        svgString += `width="100" height="100" fill="${answers.color}" />`;
+    }
+}
+
+svgString += `<text x="150" y="130" text-anchor="middle" font-size="40" fill="${answers.textColor}">${answers.text}</text>`;
+// Closing </g> tag
+svgString += "</g>";
+// Closing </svg> tag
+svgString += "</svg>";
+
+    function run() {
+        inquirer
         .prompt([
             {
                 type: 'input',
@@ -29,4 +54,3 @@ class CLI {
             }
         ])
     }
-}
