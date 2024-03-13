@@ -25,32 +25,33 @@ function writeFile(fileName, answers) {
         shapeChoice = new Square();
         svgString += `width="100" height="100" fill="${answers.color}" />`;
     }
+
+    svgString += `<text x="150" y="130" text-anchor="middle" font-size="40" fill="${answers.textColor}">${answers.text}</text>`;
+svgString += "</g>";
+svgString += "</svg>";
+    
 }
 
-svgString += `<text x="150" y="130" text-anchor="middle" font-size="40" fill="${answers.textColor}">${answers.text}</text>`;
-// Closing </g> tag
-svgString += "</g>";
-// Closing </svg> tag
-svgString += "</svg>";
+function run() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'initials',
+            message: 'Please enter your initials: '
+        },
+        {
+            type: 'input',
+            name: 'color',
+            message: 'Please enter a color or hexidecimal number: '
+        },
+        {
+            type: 'list',
+            name: 'shape',
+            message: 'Please choose a shape for your logo: ',
+            choices: ['square', 'triangle', 'circle']
+        }
+    ])
+}
 
-    function run() {
-        inquirer
-        .prompt([
-            {
-                type: 'input',
-                name: 'initials',
-                message: 'Please enter your initials: '
-            },
-            {
-                type: 'input',
-                name: 'color',
-                message: 'Please enter a color or hexidecimal number: '
-            },
-            {
-                type: 'list',
-                name: 'shape',
-                message: 'Please choose a shape for your logo: ',
-                choices: ['square', 'triangle', 'circle']
-            }
-        ])
-    }
+run();
